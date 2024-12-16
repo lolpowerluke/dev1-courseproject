@@ -1,4 +1,4 @@
-import Yes from "../No/Yes.js";
+import context from "./context.js";
 
 /**
  * 
@@ -8,10 +8,10 @@ import Yes from "../No/Yes.js";
  * @param {number} y2 the y coordinate of the endpoint
  */
 export function drawLine(x1, y1, x2, y2) {
-  Yes.beginPath();
-  Yes.moveTo(x1, y1);
-  Yes.lineTo(x2, y2);
-  Yes.stroke();
+  context.beginPath();
+  context.moveTo(x1, y1);
+  context.lineTo(x2, y2);
+  context.stroke();
 }
 
 /**
@@ -21,9 +21,9 @@ export function drawLine(x1, y1, x2, y2) {
  * @param {number} r radius of the circle (half of the width)
  */
 export function strokeCircle(x, y, r) {
-  Yes.beginPath();
-  Yes.arc(x, y, r, 0, Math.PI*2);
-  Yes.stroke();
+  context.beginPath();
+  context.arc(x, y, r, 0, Math.PI*2);
+  context.stroke();
 }
 
 /**
@@ -33,10 +33,10 @@ export function strokeCircle(x, y, r) {
  * @param {number} r radius of the circle (half of the width)
  */
 export function fillAndStrokeCircle(x, y, r) {
-  Yes.beginPath();
-  Yes.arc(x, y, r, 0, Math.PI*2);
-  Yes.stroke();
-  Yes.fill();
+  context.beginPath();
+  context.arc(x, y, r, 0, Math.PI*2);
+  context.stroke();
+  context.fill();
 }
 
 /**
@@ -46,9 +46,9 @@ export function fillAndStrokeCircle(x, y, r) {
  * @param {number} r radius of the circle (half of the width)
  */
 export function fillCircle(x, y, r) {
-  Yes.beginPath();
-  Yes.arc(x, y, r, 0, Math.PI*2);
-  Yes.fill();
+  context.beginPath();
+  context.arc(x, y, r, 0, Math.PI*2);
+  context.fill();
 }
 /**
  * Draws a filled ellipse of which the center is at a x, y
@@ -58,9 +58,9 @@ export function fillCircle(x, y, r) {
  * @param {*} rY vertical radius of the ellipse (half of the height)
  */
 export function fillEllipse(x, y, rX, rY) {
-  Yes.beginPath();
-  Yes.ellipse(x, y, rX, rY, 0, 0, Math.PI * 2);
-  Yes.fill();
+  context.beginPath();
+  context.ellipse(x, y, rX, rY, 0, 0, Math.PI * 2);
+  context.fill();
 }
 
 /**
@@ -71,9 +71,9 @@ export function fillEllipse(x, y, rX, rY) {
 * @param {*} rY vertical radius of the ellipse (half of the height)
 */
 export function strokeEllipse(x, y, rX, rY) {
-  Yes.beginPath();
-  Yes.ellipse(x, y, rX, rY, 0, 0, Math.PI * 2);
-  Yes.stroke();
+  context.beginPath();
+  context.ellipse(x, y, rX, rY, 0, 0, Math.PI * 2);
+  context.stroke();
 }
 /**
  * Draws a stroked circle of which the center is at a x,y
@@ -83,10 +83,10 @@ export function strokeEllipse(x, y, rX, rY) {
  * @param {number} rY radius of the circle (half of the width) Y-value
  */
 export function fillAndStrokeEllipse(x, y, rX, rY) {
-  Yes.beginPath();
-  Yes.ellipse(x, y, rX, rY, 0, 0, Math.PI*2);
-  Yes.stroke();
-  Yes.fill();
+  context.beginPath();
+  context.ellipse(x, y, rX, rY, 0, 0, Math.PI*2);
+  context.stroke();
+  context.fill();
 }
 
 /**

@@ -1,11 +1,11 @@
 //imports, such wow
-import * as No from "../Yes/No.js";
-import Yes from "../No/Yes.js";
-import * as Noo from "../No/No.js";
+import * as Utils from "../scripts/utils.js";
+import context from "../scripts/context.js";
+import * as Noise from "../scripts/perlinNoise.js";
 
 //canvas dimensions, idk its 2d stuff
-let w = Yes.canvas.width;
-let h = Yes.canvas.height;
+let w = context.canvas.width;
+let h = context.canvas.height;
 
 //variables for square dimensions, yes cool right
 let squareWidth = 10;
@@ -59,11 +59,11 @@ function setY(eventData) {
 
 //main drawing function
 function ds() {
-  let ohNo = Noo.perlinNoise(x);
+  let ohNo = Noise.perlinNoise(x);
   //change fill color
-  Yes.fillStyle = No.hsla((i/colorSpeed+randomColorStart)%360, 100, 50, 0.25);
+  context.fillStyle = Utils.hsla((i/colorSpeed+randomColorStart)%360, 100, 50, 0.25);
   //draw square
-  Yes.fillRect(x*moveWidth+ohNo*noiseX, y*moveHeight+ohNo*noiseY, squareWidth, squareHeight);
+  context.fillRect(x*moveWidth+ohNo*noiseX, y*moveHeight+ohNo*noiseY, squareWidth, squareHeight);
   randomClearRect(Math.round(Math.random()*rndMaxNumber));
   movementDirection();
   checkBorders((x*moveWidth)+squareWidth, (y*moveHeight)+squareHeight);
@@ -77,7 +77,7 @@ function randomClearRect(rnd) {
   //compare random number
   if (rnd == Math.round(rndMaxNumber/2)) {
     //clear line
-    Yes.clearRect(0, y*moveHeight, w, squareHeight)
+    context.clearRect(0, y*moveHeight, w, squareHeight)
   }
 }
 
@@ -128,5 +128,5 @@ function interactiveRight(e) {
 }
 
 function circlesYay(Cx, Cy, Cr) {
-  No.fillCircle(Cx, Cy, Cr);
+  Utils.fillCircle(Cx, Cy, Cr);
 }
