@@ -34,7 +34,7 @@ let rndArray = [];
 
 //noise levels
 let noiseX = 30;
-let noiseY = 0;
+let noiseY = 10;
 
 //keep track of squares hitting the sides of the screen, when will they start learing how to drive properly
 let isGoingDown = true;
@@ -49,6 +49,7 @@ for (let j = 0; j < rndMaxNumber; j++) {
     rndArray.push(false);
   }
 }
+
 window.onmousedown = interactiveRight;
 //take mousemovement, its in the name cmn
 window.onmousemove = setY;
