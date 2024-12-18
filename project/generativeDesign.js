@@ -33,6 +33,16 @@ let y;
 let k = 0;
 let i = 0;
 
+let x2 = w2;
+let y2 = h2/2;
+let i2 = 0;
+let Icolor = 0;
+let landArray = [];
+let landScapePerlinFactor = 50;
+let landscapeSectionsWidth = 30;
+let landscapeRandomChangeFactor = 10;
+let landscapeMouseSpeed = 20;
+
 let rndArray = [];
 
 //noise levels
@@ -55,17 +65,28 @@ for (let j = 0; j < rndMaxNumber; j++) {
   }
 }
 
+
 window.onmousedown = interactiveRight;
 //take mousemovement, its in the name cmn
 window.onmousemove = setY;
 
+
 //set Y according to mouse position, wow overcomplication
-function setY(eventData) {
+function setY(e) {
   if (k == 0) {
-    y = eventData.clientY/(moveHeight);
-    k = 1;
-    repeat();
+    setLineStartPoint(e.pageY);
   }
+  setLandscapeSpeed(e.pageX);
+}
+
+function setLineStartPoint(yLine) {
+  y = yLine/(moveHeight);
+  k = 1;
+}
+
+function setLandscapeSpeed(xMouse) {
+  landscapeMouseSpeed = landscapeSectionsWidth - Math.round((((xMouse/w2)) * landscapeSectionsWidth)) + 1;
+  console.log(landscapeMouseSpeed)
 }
 
 function repeat() {
@@ -76,20 +97,22 @@ function repeat() {
 
 //main drawing function
 function ds() {
-  let ohNo = Noise.perlinNoise(x);
-  let ohNoRandom = Math.round(Math.random());
-  if (ohNoRandom == 0) {
-    ohNo = ohNo*-1;
+  if (k > 0) {
+    let ohNo = Noise.perlinNoise(x);
+    let ohNoRandom = Math.round(Math.random());
+    if (ohNoRandom == 0) {
+      ohNo = ohNo*-1;
+    }
+    //change fill color
+    setColors();
+    //draw square
+    context.fillRect(x*moveWidth+ohNo*noiseX, y*moveHeight+ohNo*noiseY, squareWidth, squareHeight);
+    randomClearRect(Math.round(Math.random()*rndMaxNumber));
+    movementDirectionLine();
+    checkBordersLine((x*moveWidth)+squareWidth, (y*moveHeight)+squareHeight);
+    //keep track of amount of squares (very important), I mean its only used for color
+    i++;
   }
-  //change fill color
-  setColors();
-  //draw square
-  context.fillRect(x*moveWidth+ohNo*noiseX, y*moveHeight+ohNo*noiseY, squareWidth, squareHeight);
-  randomClearRect(Math.round(Math.random()*rndMaxNumber));
-  movementDirectionLine();
-  checkBordersLine((x*moveWidth)+squareWidth, (y*moveHeight)+squareHeight);
-  //keep track of amount of squares (very important), I mean its only used for color
-  i++;
 }
 
 function setColors() {
@@ -154,14 +177,6 @@ function circlesYay(Cx, Cy, Cr) {
   Utils.fillCircle(Cx, Cy, Cr);
 }
 
-let x2 = w2;
-let y2 = h2/2;
-let i2 = 0;
-let Icolor = 0;
-let landArray = [];
-let landScapePerlinFactor = 50;
-let landscapeSectionsWidth = 30;
-let landscapeRandomChangeFactor = 10;
 
 for (let lnd = 0; lnd < Math.round(w2/landscapeSectionsWidth)+landscapeSectionsWidth; lnd++) {
   Icolor++;
@@ -172,7 +187,7 @@ for (let lnd = 0; lnd < Math.round(w2/landscapeSectionsWidth)+landscapeSectionsW
 
 function landscape() {
   i2++;
-  if (i2 % landscapeSectionsWidth == 0) {
+  if (i2 % landscapeMouseSpeed == 0) {
     makeLandscapePoint();
     landArray.shift();
   }
@@ -182,14 +197,14 @@ function landscape() {
   for (let Iarray = 0; Iarray < landArray.length-1; Iarray++) {
     context2.fillStyle = landArray[Iarray].color;
     context2.beginPath();
-    context2.moveTo(Iarray*landscapeSectionsWidth - (i2%landscapeSectionsWidth), h2);
-    context2.lineTo(Iarray*landscapeSectionsWidth - (i2%landscapeSectionsWidth), landArray[Iarray].y);
+    context2.moveTo(Iarray*landscapeSectionsWidth - (i2%landscapeMouseSpeed), h2);
+    context2.lineTo(Iarray*landscapeSectionsWidth - (i2%landscapeMouseSpeed), landArray[Iarray].y);
     if (landArray[Iarray+1].y > landScapePerlinFactor/2) {
-      context2.lineTo(Iarray*landscapeSectionsWidth + landscapeSectionsWidth - (i2%landscapeSectionsWidth), landArray[Iarray+1].y);
+      context2.lineTo(Iarray*landscapeSectionsWidth + landscapeSectionsWidth - (i2%landscapeMouseSpeed), landArray[Iarray+1].y);
     } else {
-      context2.lineTo(Iarray*landscapeSectionsWidth + landscapeSectionsWidth - (i2%landscapeSectionsWidth), landArray[Iarray+1].y);
+      context2.lineTo(Iarray*landscapeSectionsWidth + landscapeSectionsWidth - (i2%landscapeMouseSpeed), landArray[Iarray+1].y);
     }
-    context2.lineTo(Iarray*landscapeSectionsWidth + landscapeSectionsWidth - (i2%landscapeSectionsWidth), h2);
+    context2.lineTo(Iarray*landscapeSectionsWidth + landscapeSectionsWidth - (i2%landscapeMouseSpeed), h2);
     context2.fill();
   }
 }
@@ -263,3 +278,9 @@ context3.lineTo(10 + width*3, uppercorner + width*3);
 context3.lineTo(10 + width*2, uppercorner + width*3);
 context3.lineTo(10 + width*2, uppercorner + width*2);
 context3.fill();
+
+
+
+
+
+repeat();
