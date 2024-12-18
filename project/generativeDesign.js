@@ -79,16 +79,18 @@ function setY(e) {
   setLandscapeSpeed(e.pageX);
 }
 
+// set start point for the bouncing line
 function setLineStartPoint(yLine) {
   y = yLine/(moveHeight);
   k = 1;
 }
 
+// gets faster depending on where you mouse is in the window
 function setLandscapeSpeed(xMouse) {
   landscapeMouseSpeed = landscapeSectionsWidth - Math.round((((xMouse/w2)) * landscapeSectionsWidth)) + 1;
-  console.log(landscapeMouseSpeed)
 }
 
+// repeat everything ever frame
 function repeat() {
   ds();
   landscape();
@@ -115,29 +117,17 @@ function ds() {
   }
 }
 
+// set color for bouncing line squares
 function setColors() {
   context.fillStyle = Utils.hsla((i/colorSpeed+randomColorStart)%360, 100, 50, 0.1);
 }
 
+// clear a line randomly
 function randomClearRect(rnd) {
   //compare random number
   if (rnd == Math.round(rndMaxNumber/2)) {
     //clear line
     context.clearRect(0, y*moveHeight, w, squareHeight)
-  }
-}
-
-function checkBordersLine(xWidth, yHeight) {
-  //more movement logic, again, read the code cmn
-  if (xWidth >= w) {
-    isGoingRightLine = false;
-  } else if (xWidth <= squareWidth) {
-    isGoingRightLine = true;
-  }
-  if (yHeight >= h) {
-    isGoingDownLine = false;
-  } else if (yHeight <= squareHeight) {
-    isGoingDownLine = true;
   }
 }
 
@@ -162,6 +152,21 @@ function movementDirectionLine() {
   }
 }
 
+function checkBordersLine(xWidth, yHeight) {
+  //more movement logic, again, read the code cmn
+  if (xWidth >= w) {
+    isGoingRightLine = false;
+  } else if (xWidth <= squareWidth) {
+    isGoingRightLine = true;
+  }
+  if (yHeight >= h) {
+    isGoingDownLine = false;
+  } else if (yHeight <= squareHeight) {
+    isGoingDownLine = true;
+  }
+}
+
+// draw a circle when you click (sometimes)
 /**
  * 
  * @param {MouseEvent} e 
@@ -173,18 +178,19 @@ function interactiveRight(e) {
   }
 }
 
+// draw circle
 function circlesYay(Cx, Cy, Cr) {
   Utils.fillCircle(Cx, Cy, Cr);
 }
 
-
+//create initial landscape array
 for (let lnd = 0; lnd < Math.round(w2/landscapeSectionsWidth)+landscapeSectionsWidth; lnd++) {
   Icolor++;
   i2++;
   makeLandscapePoint();
 }
 
-
+//draw landscape
 function landscape() {
   i2++;
   if (i2 % landscapeMouseSpeed == 0) {
@@ -209,6 +215,7 @@ function landscape() {
   }
 }
 
+// create coordinates for the landscape array
 function makeLandscapePoint() {
   Icolor += 5;
   checkBordersLandscape(y2)
@@ -243,6 +250,8 @@ function movementDirectionLandscape() {
   }
 }
 
+
+// draw spaceInvader
 let width = 10;
 let uppercorner = h3-width*7 - 10;
 
