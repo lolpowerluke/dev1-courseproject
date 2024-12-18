@@ -3,6 +3,7 @@ import * as Utils from "../scripts/utils.js";
 import * as Utils2 from "../scripts/utils2.js";
 import context from "../scripts/context.js";
 import context2 from "../scripts/context2.js";
+import context3 from "../scripts/context3.js";
 import * as Noise from "../scripts/perlinNoise.js";
 
 //canvas dimensions, idk its 2d stuff
@@ -10,6 +11,8 @@ let w = context.canvas.width;
 let h = context.canvas.height;
 let w2 = context2.canvas.width;
 let h2 = context2.canvas.height;
+let w3 = context3.canvas.width;
+let h3 = context3.canvas.height;
 
 //variables for square dimensions, yes cool right
 let squareWidth = 10;
@@ -33,12 +36,14 @@ let i = 0;
 let rndArray = [];
 
 //noise levels
-let noiseX = 30;
+let noiseX = 10;
 let noiseY = 10;
 
 //keep track of squares hitting the sides of the screen, when will they start learing how to drive properly
-let isGoingDown = true;
-let isGoingRight = true;
+let isGoingDownLine = true;
+let isGoingRightLine = true;
+
+let isGoingDownLandscape = true;
 
 /*This is meant to feel annoying*/
 for (let j = 0; j < rndMaxNumber; j++) {
@@ -72,13 +77,17 @@ function repeat() {
 //main drawing function
 function ds() {
   let ohNo = Noise.perlinNoise(x);
+  let ohNoRandom = Math.round(Math.random());
+  if (ohNoRandom == 0) {
+    ohNo = ohNo*-1;
+  }
   //change fill color
   setColors();
   //draw square
   context.fillRect(x*moveWidth+ohNo*noiseX, y*moveHeight+ohNo*noiseY, squareWidth, squareHeight);
   randomClearRect(Math.round(Math.random()*rndMaxNumber));
-  movementDirection();
-  checkBorders((x*moveWidth)+squareWidth, (y*moveHeight)+squareHeight);
+  movementDirectionLine();
+  checkBordersLine((x*moveWidth)+squareWidth, (y*moveHeight)+squareHeight);
   //keep track of amount of squares (very important), I mean its only used for color
   i++;
 }
@@ -95,24 +104,24 @@ function randomClearRect(rnd) {
   }
 }
 
-function checkBorders(xWidth, yHeight) {
+function checkBordersLine(xWidth, yHeight) {
   //more movement logic, again, read the code cmn
   if (xWidth >= w) {
-    isGoingRight = false;
+    isGoingRightLine = false;
   } else if (xWidth <= squareWidth) {
-    isGoingRight = true;
+    isGoingRightLine = true;
   }
   if (yHeight >= h) {
-    isGoingDown = false;
+    isGoingDownLine = false;
   } else if (yHeight <= squareHeight) {
-    isGoingDown = true;
+    isGoingDownLine = true;
   }
 }
 
-function movementDirection() {
+function movementDirectionLine() {
   //movement logic, just read the code like cmn
-  if (isGoingDown) {
-    if (isGoingRight) {
+  if (isGoingDownLine) {
+    if (isGoingRightLine) {
       x++;
       y++;
     } else {
@@ -120,7 +129,7 @@ function movementDirection() {
       y++;
     }
   } else {
-    if (isGoingRight) {
+    if (isGoingRightLine) {
       x++;
       y--;
     } else {
@@ -151,19 +160,19 @@ let i2 = 0;
 let Icolor = 0;
 let landArray = [];
 let landScapePerlinFactor = 50;
-let landscapeSectionsWidth = 20;
+let landscapeSectionsWidth = 30;
+let landscapeRandomChangeFactor = 10;
 
-for (let lnd = 0; lnd < Math.round(w2/landscapeSectionsWidth)+3; lnd++) {
+for (let lnd = 0; lnd < Math.round(w2/landscapeSectionsWidth)+landscapeSectionsWidth; lnd++) {
   Icolor++;
   i2++;
   makeLandscapePoint();
 }
-console.log(landArray);
 
 
 function landscape() {
   i2++;
-  if (i2 % 20 == 0) {
+  if (i2 % landscapeSectionsWidth == 0) {
     makeLandscapePoint();
     landArray.shift();
   }
@@ -173,29 +182,84 @@ function landscape() {
   for (let Iarray = 0; Iarray < landArray.length-1; Iarray++) {
     context2.fillStyle = landArray[Iarray].color;
     context2.beginPath();
-    context2.moveTo(Iarray*landscapeSectionsWidth - (i2%20), h2);
-    context2.lineTo(Iarray*landscapeSectionsWidth - (i2%20), landArray[Iarray].y);
-    if (landArray[Iarray+1].y > landScapePerlinFactor/1.86) {
-      context2.lineTo(Iarray*landscapeSectionsWidth + landscapeSectionsWidth - (i2%20), landArray[Iarray+1].y);
+    context2.moveTo(Iarray*landscapeSectionsWidth - (i2%landscapeSectionsWidth), h2);
+    context2.lineTo(Iarray*landscapeSectionsWidth - (i2%landscapeSectionsWidth), landArray[Iarray].y);
+    if (landArray[Iarray+1].y > landScapePerlinFactor/2) {
+      context2.lineTo(Iarray*landscapeSectionsWidth + landscapeSectionsWidth - (i2%landscapeSectionsWidth), landArray[Iarray+1].y);
     } else {
-      context2.lineTo(Iarray*landscapeSectionsWidth + landscapeSectionsWidth - (i2%20), landArray[Iarray+1].y);
+      context2.lineTo(Iarray*landscapeSectionsWidth + landscapeSectionsWidth - (i2%landscapeSectionsWidth), landArray[Iarray+1].y);
     }
-    context2.lineTo(Iarray*landscapeSectionsWidth + landscapeSectionsWidth - (i2%20), h2);
+    context2.lineTo(Iarray*landscapeSectionsWidth + landscapeSectionsWidth - (i2%landscapeSectionsWidth), h2);
     context2.fill();
   }
 }
 
 function makeLandscapePoint() {
   Icolor += 5;
-  let rndNoise = Math.round(Noise.perlinNoise(i2)*landScapePerlinFactor);
-  if (rndNoise > landScapePerlinFactor/1.86) {
-    y2 -= rndNoise;
-  } else {
-    y2 += rndNoise;
-  }
+  checkBordersLandscape(y2)
+  movementDirectionLandscape();
   let landScapePoint = {
     y: y2,
     color: Utils.hsla((Icolor/colorSpeed+randomColorStart)%360, 100, 50, 0.2)
   }
   landArray.push(landScapePoint);
 }
+
+function checkBordersLandscape(yHeight) {
+  //more movement logic, again, read the code cmn
+  if (yHeight > h2/4*3) {
+    isGoingDownLandscape = false;
+  } else if (yHeight < h2/4) {
+    isGoingDownLandscape = true;
+  }
+  let randomChange = Math.round(Math.random()*landscapeRandomChangeFactor);
+  if (randomChange == Math.round(landscapeRandomChangeFactor/2)) {
+    isGoingDownLandscape = !isGoingDownLandscape;
+  }
+}
+
+function movementDirectionLandscape() {
+  //movement logic, just read the code like cmn
+  let rndNoise = Math.round(Noise.perlinNoise(i2)*landScapePerlinFactor);
+  if (isGoingDownLandscape) {
+    y2 += rndNoise;
+  } else {
+    y2 -= rndNoise;
+  }
+}
+
+let width = 10;
+let uppercorner = h3-width*7 - 10;
+
+context3.fillStyle = "rgb(0, 0, 0, 0.5)";
+context3.strokeStyle = "rgb(255, 0, 0, 0.5)";
+context3.fillRect(10, uppercorner, width*7, width*7);
+context3.strokeRect(10, uppercorner, width*7, width*7);
+context3.fillStyle = "rgb(0, 255, 0, 0.25)";
+
+context3.beginPath();
+context3.moveTo(10 + width, uppercorner + width*2);
+context3.lineTo(10 + width, uppercorner + width*4);
+context3.lineTo(10 + width*2, uppercorner + width*4);
+context3.lineTo(10 + width*2, uppercorner + width*5);
+context3.lineTo(10 + width*1, uppercorner + width*5);
+context3.lineTo(10 + width*1, uppercorner + width*6);
+context3.lineTo(10 + width*3, uppercorner + width*6);
+context3.lineTo(10 + width*3, uppercorner + width*4);
+context3.lineTo(10 + width*4, uppercorner + width*4);
+context3.lineTo(10 + width*4, uppercorner + width*6);
+context3.lineTo(10 + width*6, uppercorner + width*6);
+context3.lineTo(10 + width*6, uppercorner + width*5);
+context3.lineTo(10 + width*5, uppercorner + width*5);
+context3.lineTo(10 + width*5, uppercorner + width*4);
+context3.lineTo(10 + width*6, uppercorner + width*4);
+context3.lineTo(10 + width*6, uppercorner + width*2);
+context3.lineTo(10 + width*5, uppercorner + width*2);
+context3.lineTo(10 + width*5, uppercorner + width*3);
+context3.lineTo(10 + width*4, uppercorner + width*3);
+context3.lineTo(10 + width*4, uppercorner + width*2);
+context3.lineTo(10 + width*3, uppercorner + width*2);
+context3.lineTo(10 + width*3, uppercorner + width*3);
+context3.lineTo(10 + width*2, uppercorner + width*3);
+context3.lineTo(10 + width*2, uppercorner + width*2);
+context3.fill();
