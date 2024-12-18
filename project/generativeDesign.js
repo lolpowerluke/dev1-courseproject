@@ -253,39 +253,40 @@ function movementDirectionLandscape() {
 
 // draw spaceInvader
 let width = 10;
-let uppercorner = h3-width*7 - 10;
+let uppercornerHeight = h3-width*7 - 10;
+let uppercornerWidth = w3-width*7 - 10;
 
 context3.fillStyle = "rgb(0, 0, 0, 0.5)";
 context3.strokeStyle = "rgb(255, 0, 0, 0.5)";
-context3.fillRect(10, uppercorner, width*7, width*7);
-context3.strokeRect(10, uppercorner, width*7, width*7);
+context3.fillRect(uppercornerWidth, uppercornerHeight, width*7, width*7);
+context3.strokeRect(uppercornerWidth, uppercornerHeight, width*7, width*7);
 context3.fillStyle = "rgb(0, 255, 0, 0.25)";
 
 context3.beginPath();
-context3.moveTo(10 + width, uppercorner + width*2);
-context3.lineTo(10 + width, uppercorner + width*4);
-context3.lineTo(10 + width*2, uppercorner + width*4);
-context3.lineTo(10 + width*2, uppercorner + width*5);
-context3.lineTo(10 + width*1, uppercorner + width*5);
-context3.lineTo(10 + width*1, uppercorner + width*6);
-context3.lineTo(10 + width*3, uppercorner + width*6);
-context3.lineTo(10 + width*3, uppercorner + width*4);
-context3.lineTo(10 + width*4, uppercorner + width*4);
-context3.lineTo(10 + width*4, uppercorner + width*6);
-context3.lineTo(10 + width*6, uppercorner + width*6);
-context3.lineTo(10 + width*6, uppercorner + width*5);
-context3.lineTo(10 + width*5, uppercorner + width*5);
-context3.lineTo(10 + width*5, uppercorner + width*4);
-context3.lineTo(10 + width*6, uppercorner + width*4);
-context3.lineTo(10 + width*6, uppercorner + width*2);
-context3.lineTo(10 + width*5, uppercorner + width*2);
-context3.lineTo(10 + width*5, uppercorner + width*3);
-context3.lineTo(10 + width*4, uppercorner + width*3);
-context3.lineTo(10 + width*4, uppercorner + width*2);
-context3.lineTo(10 + width*3, uppercorner + width*2);
-context3.lineTo(10 + width*3, uppercorner + width*3);
-context3.lineTo(10 + width*2, uppercorner + width*3);
-context3.lineTo(10 + width*2, uppercorner + width*2);
+context3.moveTo(uppercornerWidth + width, uppercornerHeight + width*2);
+context3.lineTo(uppercornerWidth + width, uppercornerHeight + width*4);
+context3.lineTo(uppercornerWidth + width*2, uppercornerHeight + width*4);
+context3.lineTo(uppercornerWidth + width*2, uppercornerHeight + width*5);
+context3.lineTo(uppercornerWidth + width*1, uppercornerHeight + width*5);
+context3.lineTo(uppercornerWidth + width*1, uppercornerHeight + width*6);
+context3.lineTo(uppercornerWidth + width*3, uppercornerHeight + width*6);
+context3.lineTo(uppercornerWidth + width*3, uppercornerHeight + width*4);
+context3.lineTo(uppercornerWidth + width*4, uppercornerHeight + width*4);
+context3.lineTo(uppercornerWidth + width*4, uppercornerHeight + width*6);
+context3.lineTo(uppercornerWidth + width*6, uppercornerHeight + width*6);
+context3.lineTo(uppercornerWidth + width*6, uppercornerHeight + width*5);
+context3.lineTo(uppercornerWidth + width*5, uppercornerHeight + width*5);
+context3.lineTo(uppercornerWidth + width*5, uppercornerHeight + width*4);
+context3.lineTo(uppercornerWidth + width*6, uppercornerHeight + width*4);
+context3.lineTo(uppercornerWidth + width*6, uppercornerHeight + width*2);
+context3.lineTo(uppercornerWidth + width*5, uppercornerHeight + width*2);
+context3.lineTo(uppercornerWidth + width*5, uppercornerHeight + width*3);
+context3.lineTo(uppercornerWidth + width*4, uppercornerHeight + width*3);
+context3.lineTo(uppercornerWidth + width*4, uppercornerHeight + width*2);
+context3.lineTo(uppercornerWidth + width*3, uppercornerHeight + width*2);
+context3.lineTo(uppercornerWidth + width*3, uppercornerHeight + width*3);
+context3.lineTo(uppercornerWidth + width*2, uppercornerHeight + width*3);
+context3.lineTo(uppercornerWidth + width*2, uppercornerHeight + width*2);
 context3.fill();
 
 
